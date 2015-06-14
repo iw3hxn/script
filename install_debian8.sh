@@ -90,7 +90,7 @@ sudo su $OE_USER -c "mkdir $OE_HOME/custom"
 
 echo -e "\n----  Configure Aeroo Reports ----"
 aptitude install openoffice.org python-genshi python-cairo python-openoffice python-uno -y
-sudo cd $OE_HOME/libaeroo/aeroolib
+cd $OE_HOME/libaeroo/aeroolib
 sudo python ./setup.py install
 
 echo -e "\n---- Setting permissions on home folder ----"
@@ -195,7 +195,7 @@ sudo service $OE_CONFIG start
 echo "Done! The OpenERP server can be started with: service $OE_CONFIG start"
 
 
-echo -e "* Create init file"
+echo -e "* Create LibreOffice init file"
 echo '#!/bin/sh' >> ~/$LO_CONFIG
 echo '### BEGIN INIT INFO' >> ~/$LO_CONFIG
 echo '# Provides: $OE_CONFIG' >> ~/$LO_CONFIG
