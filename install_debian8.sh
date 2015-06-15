@@ -57,11 +57,11 @@ echo -e "\n---- Install wkhtml ----"
 sudo apt-get remove wkhtmltopdf
 sudo apt-get install bzip2
 
-cd /tmp
-sudo wget https://wkhtmltopdf.googlecode.com/files/wkhtmltopdf-0.11.0_rc1-static-amd64.tar.bz2
-sudo tar xvjf wkhtmltopdf-0.11.0_rc1-static-amd64.tar.bz2
-sudo mv wkhtmltopdf-amd64 /usr/local/sbin/wkhtmltopdf
-sudo chmod +x /usr/local/sbin/wkhtmltopdf
+#cd /tmp
+#sudo wget https://wkhtmltopdf.googlecode.com/files/wkhtmltopdf-0.11.0_rc1-static-amd64.tar.bz2
+#sudo tar xvjf wkhtmltopdf-0.11.0_rc1-static-amd64.tar.bz2
+#sudo mv wkhtmltopdf-amd64 /usr/local/sbin/wkhtmltopdf
+#sudo chmod +x /usr/local/sbin/wkhtmltopdf
 
 echo -e "\n---- Create OpenERP system user ----"
 sudo adduser --system --quiet --shell=/bin/bash --home=$OE_HOME --gecos 'ODOO' --group $OE_USER
