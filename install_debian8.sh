@@ -196,48 +196,78 @@ echo "Done! The OpenERP server can be started with: service $OE_CONFIG start"
 
 
 echo -e "* Create LibreOffice init file"
-echo '#!/bin/sh' >> ~/$LO_CONFIG
-echo '### BEGIN INIT INFO' >> ~/$LO_CONFIG
-echo '# Provides: $OE_CONFIG' >> ~/$LO_CONFIG
-echo '# Required-Start: $remote_fs $syslog' >> ~/$LO_CONFIG
-echo '# Required-Stop: $remote_fs $syslog' >> ~/$LO_CONFIG
-echo '# Should-Start: $network' >> ~/$LO_CONFIG
-echo '# Should-Stop: $network' >> ~/$LO_CONFIG
-echo '# Default-Start: 2 3 4 5' >> ~/$LO_CONFIG
-echo '# Default-Stop: 0 1 6' >> ~/$LO_CONFIG
-echo '# Short-Description: Start daemon at boot time' >> ~/$LO_CONFIG
-echo '# Description:       Enable service provided by daemon.' >> ~/$LO_CONFIG
-echo '### END INIT INFO' >> ~/$LO_CONFIG
-echo 'OOo_HOME=/usr/bin' >> ~/$LO_CONFIG
-echo 'SOFFICE_PATH=$OOo_HOME/soffice' >> ~/$LO_CONFIG
-echo 'PIDFILE=/var/run/openoffice-server.pid' >> ~/$LO_CONFIG
-echo 'set -e' >> ~/$LO_CONFIG
-echo 'case "$1" in' >> ~/$LO_CONFIG
-echo 'start)' >> ~/$LO_CONFIG
-echo 'if [ -f $PIDFILE ]; then' >> ~/$LO_CONFIG
-echo 'echo "OpenOffice headless server has already started."' >> ~/$LO_CONFIG
-echo 'sleep 5' >> ~/$LO_CONFIG
-echo 'exit' >> ~/$LO_CONFIG
-echo 'fi' >> ~/$LO_CONFIG
-echo 'echo "Starting OpenOffice headless server"' >> ~/$LO_CONFIG
-echo '$SOFFICE_PATH -headless -nologo -nofirststartwizard -accept="socket,host=127.0.0.1,port=8100;urp" & > /dev/null 2>&1' >> ~/$LO_CONFIG
-echo 'touch $PIDFILE' >> ~/$LO_CONFIG
-echo ';;' >> ~/$LO_CONFIG
-echo 'stop)' >> ~/$LO_CONFIG
-echo 'if [ -f $PIDFILE ]; then' >> ~/$LO_CONFIG
-echo 'echo "Stopping OpenOffice headless server."' >> ~/$LO_CONFIG
-echo 'killall -9 soffice && killall -9 soffice.bin' >> ~/$LO_CONFIG
-echo 'rm -f $PIDFILE' >> ~/$LO_CONFIG
-echo 'exit' >> ~/$LO_CONFIG
-echo 'fi' >> ~/$LO_CONFIG
-echo 'echo "Openoffice headless server is not running."' >> ~/$LO_CONFIG
-echo 'exit' >> ~/$LO_CONFIG
-echo ';;' >> ~/$LO_CONFIG
-echo '*)' >> ~/$LO_CONFIG
-echo 'echo "Usage: $0 {start|stop}"' >> ~/$LO_CONFIG
-echo 'exit 1' >> ~/$LO_CONFIG
-echo 'esac' >> ~/$LO_CONFIG
-echo 'exit 0' >> ~/$LO_CONFIG
+
+
+echo '#!/bin/bash ' >> ~/$LO_CONFIG
+echo '# openoffice.org headless server script ' >> ~/$LO_CONFIG
+echo '# ' >> ~/$LO_CONFIG
+echo '# Author: Vic Vijayakumar ' >> ~/$LO_CONFIG
+echo '# Modified by Federico Ch. Tomasczik ' >> ~/$LO_CONFIG
+echo '# Vastly Modified by Gervais de Montbrun -> February 2014 ' >> ~/$LO_CONFIG
+echo '## Tested with LibreOffice 3.5 on Ubuntu 12.04.3 LTS ' >> ~/$LO_CONFIG
+echo '## Ubuntu has dropped openoffice.org-headless package ' >> ~/$LO_CONFIG
+echo '## CentOS by default does not allow apache user to have a shell ' >> ~/$LO_CONFIG
+echo '## If you want this to work on CentOS, then: ' >> ~/$LO_CONFIG
+echo '###  sed -i "s|apache:x:48:48:Apache:/var/www:/sbin/nologin|apache:x:48:48:Apache:/var/www:/bin/sh|" /etc/passwd ' >> ~/$LO_CONFIG
+echo '###  sed -i "s|www-data|apache|g" /etc/init.d/openoffice ' >> ~/$LO_CONFIG
+echo '# ' >> ~/$LO_CONFIG
+echo '# it's a service! ' >> ~/$LO_CONFIG
+echo '### BEGIN INIT INFO ' >> ~/$LO_CONFIG
+echo '# chkconfig: 2345 80 30 ' >> ~/$LO_CONFIG
+echo '# processname: openoffice ' >> ~/$LO_CONFIG
+echo '# Provides: openoffice headless ' >> ~/$LO_CONFIG
+echo '# Required-Start: $all ' >> ~/$LO_CONFIG
+echo '# Required-Stop: $all ' >> ~/$LO_CONFIG
+echo '# Default-Start: 2 3 4 5 ' >> ~/$LO_CONFIG
+echo '# Default-Stop: 0 1 6 ' >> ~/$LO_CONFIG
+echo '# Short-Description: Start openoffice-headless at boot. ' >> ~/$LO_CONFIG
+echo '# Description: headless openoffice server script ' >> ~/$LO_CONFIG
+echo '### END INIT INFO ' >> ~/$LO_CONFIG
+echo ' ' >> ~/$LO_CONFIG
+echo 'OOo_HOME=/usr/bin ' >> ~/$LO_CONFIG
+echo 'SOFFICE_PATH=$OOo_HOME/soffice ' >> ~/$LO_CONFIG
+echo 'PID_SEARCH="pgrep -nf $SOFFICE_PATH" ' >> ~/$LO_CONFIG
+echo ' ' >> ~/$LO_CONFIG
+echo 'set -e ' >> ~/$LO_CONFIG
+echo ' ' >> ~/$LO_CONFIG
+echo 'case "$1" in ' >> ~/$LO_CONFIG
+echo '  start) ' >> ~/$LO_CONFIG
+echo '    if [ `$PID_SEARCH` ]; then ' >> ~/$LO_CONFIG
+echo '     echo "OpenOffice headless server has already started." ' >> ~/$LO_CONFIG
+echo '    else ' >> ~/$LO_CONFIG
+echo '      echo "Starting OpenOffice headless server" ' >> ~/$LO_CONFIG
+echo '      /bin/su - www-data -c "$SOFFICE_PATH --headless --nologo --nofirststartwizard --accept=\"socket,host=127.0.0.1,port=8100;urp\"" & > /dev/null 2>&1 ' >> ~/$LO_CONFIG
+echo '    fi ' >> ~/$LO_CONFIG
+echo '  ;; ' >> ~/$LO_CONFIG
+echo ' ' >> ~/$LO_CONFIG
+echo '  stop) ' >> ~/$LO_CONFIG
+echo '    if [ `$PID_SEARCH` ]; then ' >> ~/$LO_CONFIG
+echo '      echo "Stopping OpenOffice headless server." ' >> ~/$LO_CONFIG
+echo '      killall -9 soffice.bin ' >> ~/$LO_CONFIG
+echo '      sleep 5 ' >> ~/$LO_CONFIG
+echo '    else ' >> ~/$LO_CONFIG
+echo '      echo "Openoffice headless server is not running." ' >> ~/$LO_CONFIG
+echo '    fi ' >> ~/$LO_CONFIG
+echo '  ;; ' >> ~/$LO_CONFIG
+echo ' ' >> ~/$LO_CONFIG
+echo '  status) ' >> ~/$LO_CONFIG
+echo '    if [ `$PID_SEARCH` ]; then ' >> ~/$LO_CONFIG
+echo '      echo "OpenOffice headless is running" ' >> ~/$LO_CONFIG
+echo '      exit 0 ' >> ~/$LO_CONFIG
+echo '    else ' >> ~/$LO_CONFIG
+echo '      echo "OpenOffice headless is not currently running, you can start it with $0 start" ' >> ~/$LO_CONFIG
+echo '      exit 1 ' >> ~/$LO_CONFIG
+echo '    fi ' >> ~/$LO_CONFIG
+echo '  ;; ' >> ~/$LO_CONFIG
+echo ' ' >> ~/$LO_CONFIG
+echo 'restart) $0 stop ; $0 start ;; ' >> ~/$LO_CONFIG
+echo 'status) status ;; ' >> ~/$LO_CONFIG
+echo ' ' >> ~/$LO_CONFIG
+echo '*) ' >> ~/$LO_CONFIG
+echo '  echo "Usage: $0 {start|stop|restart|status}" ' >> ~/$LO_CONFIG
+echo '  exit 1 ' >> ~/$LO_CONFIG
+echo 'esac ' >> ~/$LO_CONFIG
+echo 'exit 0 ' >> ~/$LO_CONFIG
 
 echo -e "* Security Init File"
 sudo mv ~/$LO_CONFIG /etc/init.d/$LO_CONFIG
@@ -248,5 +278,9 @@ echo -e "* Start LibrOffice on Startup"
 sudo update-rc.d $LO_CONFIG defaults
 
 sudo service $LO_CONFIG start
+
+echo -e 'openerp ALL=(ALL) NOPASSWD: /etc/init.d/office_init' >> /etc/sudoers
+
+
 
 
