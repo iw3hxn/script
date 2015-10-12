@@ -211,7 +211,7 @@ echo '## If you want this to work on CentOS, then: ' >> ~/$LO_CONFIG
 echo '###  sed -i "s|apache:x:48:48:Apache:/var/www:/sbin/nologin|apache:x:48:48:Apache:/var/www:/bin/sh|" /etc/passwd ' >> ~/$LO_CONFIG
 echo '###  sed -i "s|www-data|apache|g" /etc/init.d/openoffice ' >> ~/$LO_CONFIG
 echo '# ' >> ~/$LO_CONFIG
-echo '# it's a service! ' >> ~/$LO_CONFIG
+echo '# it\''s a service! ' >> ~/$LO_CONFIG
 echo '### BEGIN INIT INFO ' >> ~/$LO_CONFIG
 echo '# chkconfig: 2345 80 30 ' >> ~/$LO_CONFIG
 echo '# processname: openoffice ' >> ~/$LO_CONFIG
