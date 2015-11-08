@@ -50,7 +50,7 @@ sudo su - postgres -c "createuser -s $OE_USER" 2> /dev/null || true
 # Install Dependencies
 #--------------------------------------------------
 echo -e "\n---- Install tool packages ----"
-sudo apt-get install wget subversion git bzr bzrtools python-pip python-dev libxml2-dev libxslt-dev lib32z1-dev libldap2-dev libsasl2-dev libssl-dev -y
+sudo apt-get install wget subversion git bzr bzrtools python-pip python-dev libxml2-dev libxslt-dev lib32z1-dev libldap2-dev poppler-utils libsasl2-dev libssl-dev -y 
 
 echo -e "\n---- Install wkhtml ----"
 
