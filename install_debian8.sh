@@ -82,7 +82,7 @@ sudo bzr branch lp:aeroolib $OE_HOME/libaeroo
 
 echo -e "\n---- Install python libraries ----"
 sudo pip install -r $OE_HOME/server/requirements.txt
-
+sudo pip install codicefiscale pyvies
 
 echo -e "\n---- Create custom module directory ----"
 sudo su $OE_USER -c "mkdir $OE_HOME/custom"
