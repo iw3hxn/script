@@ -90,6 +90,8 @@ sudo su $OE_USER -c "mkdir $OE_HOME/custom"
 
 echo -e "\n----  Configure Aeroo Reports ----"
 aptitude install openoffice.org python-genshi python-cairo python-openoffice python-uno -y
+apt-get install  python-uno
+
 cd $OE_HOME/libaeroo/aeroolib
 sudo python ./setup.py install
 
@@ -236,7 +238,7 @@ echo '    if [ `$PID_SEARCH` ]; then ' >> ~/$LO_CONFIG
 echo '     echo "OpenOffice headless server has already started." ' >> ~/$LO_CONFIG
 echo '    else ' >> ~/$LO_CONFIG
 echo '      echo "Starting OpenOffice headless server" ' >> ~/$LO_CONFIG
-echo '      /bin/su - www-data -c "$SOFFICE_PATH --headless --nologo --nofirststartwizard --accept=\"socket,host=127.0.0.1,port=8100;urp\"" & > /dev/null 2>&1 ' >> ~/$LO_CONFIG
+echo '      /bin/su - openerp -c "$SOFFICE_PATH --headless --nologo --nofirststartwizard --accept=\"socket,host=127.0.0.1,port=8100;urp\"" & > /dev/null 2>&1 ' >> ~/$LO_CONFIG
 echo '    fi ' >> ~/$LO_CONFIG
 echo '  ;; ' >> ~/$LO_CONFIG
 echo ' ' >> ~/$LO_CONFIG
@@ -279,7 +281,7 @@ sudo update-rc.d $LO_CONFIG defaults
 
 sudo service $LO_CONFIG start
 
-echo -e 'openerp ALL=(ALL) NOPASSWD: /etc/init.d/office_init' >> /etc/sudoers
+echo -e "openerp ALL=(ALL) NOPASSWD: /etc/init.d/office_init" >> /etc/sudoers
 
 
 
