@@ -55,7 +55,7 @@ sudo apt-get install wget subversion git bzr bzrtools python-pip python-dev libx
 echo -e "\n---- Install wkhtml ----"
 
 sudo apt-get remove wkhtmltopdf
-sudo apt-get install bzip2
+sudo apt-get install bzip2 -y
 
 #cd /tmp
 #sudo wget https://wkhtmltopdf.googlecode.com/files/wkhtmltopdf-0.11.0_rc1-static-amd64.tar.bz2
@@ -81,6 +81,7 @@ sudo git clone https://github.com/iw3hxn/LibrERP.git $OE_HOME/LibrERP
 sudo bzr branch lp:aeroolib $OE_HOME/libaeroo
 
 echo -e "\n---- Install python libraries ----"
+easy_install pip
 sudo pip install -r $OE_HOME/server/requirements.txt
 sudo pip install codicefiscale pyvies
 
@@ -90,7 +91,8 @@ sudo su $OE_USER -c "mkdir $OE_HOME/custom"
 
 echo -e "\n----  Configure Aeroo Reports ----"
 aptitude install openoffice.org python-genshi python-cairo python-openoffice python-uno -y
-apt-get install  python-uno
+apt-get install  python-uno -y
+apt-get install libreoffice -y
 
 cd $OE_HOME/libaeroo/aeroolib
 sudo python ./setup.py install
@@ -116,7 +118,7 @@ sudo su root -c "echo 'addons_path=$OE_HOME/LibrERP/web_client/ea_web-github/add
 echo -e "* Create init file"
 echo '#!/bin/sh' >> ~/$OE_CONFIG
 echo '### BEGIN INIT INFO' >> ~/$OE_CONFIG
-echo '# Provides: $OE_CONFIG' >> ~/$OE_CONFIG
+echo '# Provides: librerp' >> ~/$OE_CONFIG
 echo '# Required-Start: $remote_fs $syslog' >> ~/$OE_CONFIG
 echo '# Required-Stop: $remote_fs $syslog' >> ~/$OE_CONFIG
 echo '# Should-Start: $network' >> ~/$OE_CONFIG
@@ -282,7 +284,3 @@ sudo update-rc.d $LO_CONFIG defaults
 sudo service $LO_CONFIG start
 
 echo -e "openerp ALL=(ALL) NOPASSWD: /etc/init.d/office_init" >> /etc/sudoers
-
-
-
-
