@@ -75,13 +75,13 @@ sudo chown $OE_USER:$OE_USER /var/log/$OE_USER
 #--------------------------------------------------
 
 echo -e "\n==== Installing ODOO Server ===="
-sudo git clone https://github.com/iw3hxn/server.git $OE_HOME/server
-sudo git clone https://github.com/iw3hxn/addons.git $OE_HOME/addons
-sudo git clone https://github.com/iw3hxn/LibrERP.git $OE_HOME/LibrERP
+sudo git clone --depth 1 https://github.com/iw3hxn/server.git $OE_HOME/server
+sudo git clone --depth 1 https://github.com/iw3hxn/addons.git $OE_HOME/addons
+sudo git clone --depth 1 https://github.com/iw3hxn/LibrERP.git $OE_HOME/LibrERP
 sudo bzr branch lp:aeroolib $OE_HOME/libaeroo
 
 echo -e "\n---- Install python libraries ----"
-easy_install pip
+easy_install --update pip
 sudo pip install -r $OE_HOME/server/requirements.txt
 sudo pip install codicefiscale pyvies
 
