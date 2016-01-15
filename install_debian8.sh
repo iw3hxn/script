@@ -38,7 +38,7 @@ sudo apt-get upgrade -y
 # Install PostgreSQL Server
 #--------------------------------------------------
 echo -e "\n---- Install PostgreSQL Server ----"
-sudo apt-get install postgresql postgresql-server-dev-9.4 -y
+sudo apt-get install sudo postgresql postgresql-server-dev-9.4 -y
 	
 echo -e "\n---- PostgreSQL $PG_VERSION Settings  ----"
 sudo sed -i s/"#listen_addresses = 'localhost'"/"listen_addresses = '*'"/g /etc/postgresql/9.4/main/postgresql.conf
@@ -81,9 +81,9 @@ sudo git clone --depth 1 https://github.com/iw3hxn/LibrERP.git $OE_HOME/LibrERP
 sudo bzr branch lp:aeroolib $OE_HOME/libaeroo
 
 echo -e "\n---- Install python libraries ----"
-easy_install --update pip
+easy_install --upgrade pip
 sudo pip install -r $OE_HOME/server/requirements.txt
-sudo pip install codicefiscale pyvies
+sudo pip install codicefiscale pyvies xlrd
 
 echo -e "\n---- Create custom module directory ----"
 sudo su $OE_USER -c "mkdir $OE_HOME/custom"
