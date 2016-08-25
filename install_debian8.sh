@@ -27,6 +27,10 @@ OE_SUPERADMIN="superadminpassword"
 OE_CONFIG="$OE_USER-server"
 LO_CONFIG="office_init"
 
+export GIT_TRACE_PACKET=1
+export GIT_TRACE=1
+export GIT_CURL_VERBOSE=1
+
 #--------------------------------------------------
 # Update Server
 #--------------------------------------------------
@@ -50,7 +54,7 @@ sudo su - postgres -c "createuser -s $OE_USER" 2> /dev/null || true
 # Install Dependencies
 #--------------------------------------------------
 echo -e "\n---- Install tool packages ----"
-sudo apt-get install wget subversion git bzr bzrtools python-pip python-dev libxml2-dev libxslt-dev lib32z1-dev libldap2-dev poppler-utils libsasl2-dev libssl-dev -y 
+sudo apt-get install wget subversion git bzr bzrtools python-pip python-dev libxml2-dev libxslt-dev lib32z1-dev libldap2-dev poppler-utils libsasl2-dev libssl-dev libjpeg-dev -y 
 
 echo -e "\n---- Install wkhtml ----"
 
